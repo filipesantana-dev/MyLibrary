@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    @*Book Author firstBook = Model.ToList().FirstOrDefault();*@
 }
 
 <h1>Index</h1>
@@ -13,6 +14,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.BookId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
@@ -21,12 +25,19 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseYear)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorBook)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -37,11 +48,17 @@
                 @Html.DisplayFor(modelItem => item.ReleaseYear)
             </td>
             <td>
+                @foreach (var author in ViewBag.Authors)
+                {
+                    <label>@ViewBag.FirstName @ViewBag.LastName</label>
+                }
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

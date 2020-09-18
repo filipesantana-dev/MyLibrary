@@ -12,6 +12,6 @@ namespace MyLibrary.BLL.Models
         public string ISBN { get; set; }
         public int ReleaseYear { get; set; }
 
-        public ICollection<AuthorBook> AuthorBook { get; set; }
+        public IList<AuthorBook> AuthorBook { get; set; }
     }
 }

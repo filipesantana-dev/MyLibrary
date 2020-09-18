@@ -22,6 +22,7 @@ namespace MyLibrary.WEB.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
+            ViewBag.Authors = _context.Authors;
             return View(await _context.Books.ToListAsync());
         }
 
@@ -46,6 +47,7 @@ namespace MyLibrary.WEB.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
+            ViewBag.Authors = _context.Authors;
             return View();
         }
 
@@ -54,15 +56,24 @@ namespace MyLibrary.WEB.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookId,Title,ISBN,ReleaseYear")] Book book)
+        public IActionResult Create([Bind("BookId,Title,ISBN,ReleaseYear,Author")] int BookId, int[] AuthorIds)
         {
-            if (ModelState.IsValid)
+            foreach (int authId in AuthorIds)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                AuthorBook authorBook = new AuthorBook();
+                authorBook.BookId = BookId;
+                authorBook.AuthorId = authId;
+                _context.AuthorBook.Add(authorBook);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return View(book);
+
+            return View("Index");
+            /*ViewData["BookId"] = new SelectList(_context.Authors, "AuthorId", "{FirstName}" + "{LastName}", author.AuthorId);*/
+            //ViewBag.AuthorId = new SelectList(_context.Authors, "AuthorId", "ToString");
+            /*ViewBag.Authors = _context.Authors;*/
+            /*ViewData["FirstName"] = new SelectList(_context.Authors, "FirstName", "FirstName", author.FirstName);*/
+            /*return View(book);*/
         }
 
         // GET: Books/Edit/5

@@ -10,7 +10,7 @@ using MyLibrary.DAL;
 namespace MyLibrary.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200917040246_Initial")]
+    [Migration("20200918141027_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
