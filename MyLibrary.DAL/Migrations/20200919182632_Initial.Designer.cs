@@ -10,7 +10,7 @@ using MyLibrary.DAL;
 namespace MyLibrary.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200918141027_Initial")]
+    [Migration("20200919182632_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace MyLibrary.DAL.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("AuthorBook");
+                    b.ToTable("AuthorBooks");
                 });
 
             modelBuilder.Entity("MyLibrary.BLL.Models.Book", b =>

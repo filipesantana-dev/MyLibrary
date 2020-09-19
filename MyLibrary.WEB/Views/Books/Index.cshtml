@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    @*Book Author firstBook = Model.ToList().FirstOrDefault();*@
 }
 
 <h1>Index</h1>
@@ -48,10 +47,7 @@
                 @Html.DisplayFor(modelItem => item.ReleaseYear)
             </td>
             <td>
-                @foreach (var author in ViewBag.Authors)
-                {
-                    <label>@ViewBag.FirstName @ViewBag.LastName</label>
-                }
+                @Html.DisplayFor(modelItem => item.AuthorBook)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |

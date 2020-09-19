@@ -57,7 +57,7 @@ namespace MyLibrary.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AuthorBook",
+                name: "AuthorBooks",
                 columns: table => new
                 {
                     AuthorId = table.Column<int>(nullable: false),
@@ -65,15 +65,15 @@ namespace MyLibrary.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuthorBook", x => new { x.AuthorId, x.BookId });
+                    table.PrimaryKey("PK_AuthorBooks", x => new { x.AuthorId, x.BookId });
                     table.ForeignKey(
-                        name: "FK_AuthorBook_Authors_AuthorId",
+                        name: "FK_AuthorBooks_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
                         principalColumn: "AuthorId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AuthorBook_Books_BookId",
+                        name: "FK_AuthorBooks_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "BookId",
@@ -81,15 +81,15 @@ namespace MyLibrary.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuthorBook_BookId",
-                table: "AuthorBook",
+                name: "IX_AuthorBooks_BookId",
+                table: "AuthorBooks",
                 column: "BookId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AuthorBook");
+                name: "AuthorBooks");
 
             migrationBuilder.DropTable(
                 name: "Users");

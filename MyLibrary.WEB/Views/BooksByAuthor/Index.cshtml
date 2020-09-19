@@ -1,16 +1,14 @@
 ﻿@model IEnumerable<MyLibrary.BLL.Models.AuthorBook>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                Autor do Livro
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Book)
+                Titulo do Livro
             </th>
             <th></th>
         </tr>
@@ -19,15 +17,15 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Author.AuthorId)
+                @Html.DisplayFor(modelItem => item.Author.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Book.BookId)
+                @Html.DisplayFor(modelItem => item.Book.Title)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>
 }

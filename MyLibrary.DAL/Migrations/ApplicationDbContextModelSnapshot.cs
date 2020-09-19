@@ -55,7 +55,7 @@ namespace MyLibrary.DAL.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("AuthorBook");
+                    b.ToTable("AuthorBooks");
                 });
 
             modelBuilder.Entity("MyLibrary.BLL.Models.Book", b =>

@@ -21,9 +21,13 @@ namespace MyLibrary.BLL.Models
 
         public IList<AuthorBook> AuthorBook { get; set; }
 
-        public override string ToString()
+        public string FullName
         {
-            return string.Format("{0} {1}", FirstName, LastName);
+            get
+            {
+                return $"{FirstName} {LastName }";
+            }
         }
+
     }
 }

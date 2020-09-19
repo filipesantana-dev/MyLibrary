@@ -1,6 +1,6 @@
 ﻿namespace MyLibrary.BLL.Models
 {
-    public partial class AuthorBook
+    public class AuthorBook
     {
         //FK e propriedade de navegação para Author
         public int AuthorId { get; set; }

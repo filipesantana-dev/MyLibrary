@@ -22,8 +22,8 @@ namespace MyLibrary.WEB.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            ViewBag.Authors = _context.Authors;
-            return View(await _context.Books.ToListAsync());
+            var databaseContext = _context.Books.Include(c => c.AuthorBook);
+            return View(await databaseContext.ToListAsync());
         }
 
         // GET: Books/Details/5
@@ -34,7 +34,7 @@ namespace MyLibrary.WEB.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.Include(m => m.AuthorBook)
+            var book = await _context.Books
                 .FirstOrDefaultAsync(m => m.BookId == id);
             if (book == null)
             {
@@ -56,24 +56,25 @@ namespace MyLibrary.WEB.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("BookId,Title,ISBN,ReleaseYear,Author")] int BookId, int[] AuthorIds)
+        public async Task<IActionResult> Create([Bind("BookId,Title,ISBN,ReleaseYear,AuthorId, FirstName, LastName, Email, BirthDate")] Book book, Author author, int[] AuthorId)
         {
-            foreach (int authId in AuthorIds)
+            if (ModelState.IsValid)
             {
-                AuthorBook authorBook = new AuthorBook();
-                authorBook.BookId = BookId;
-                authorBook.AuthorId = authId;
-                _context.AuthorBook.Add(authorBook);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                _context.Add(book);
+                await _context.SaveChangesAsync();
 
-            return View("Index");
-            /*ViewData["BookId"] = new SelectList(_context.Authors, "AuthorId", "{FirstName}" + "{LastName}", author.AuthorId);*/
-            //ViewBag.AuthorId = new SelectList(_context.Authors, "AuthorId", "ToString");
-            /*ViewBag.Authors = _context.Authors;*/
-            /*ViewData["FirstName"] = new SelectList(_context.Authors, "FirstName", "FirstName", author.FirstName);*/
-            /*return View(book);*/
+                foreach (int authId in AuthorId)
+                {                    
+                    author.AuthorId = authId;
+                    AuthorId.Append(authId);
+                    _context.Update(author.AuthorId);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+            }
+            ViewBag.Authors = _context.Add(AuthorId);
+            return View(book);
         }
 
         // GET: Books/Edit/5
