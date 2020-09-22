@@ -19,7 +19,7 @@ namespace MyLibrary.BLL.Models
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-        public IList<AuthorBook> AuthorBook { get; set; }
+        public List<AuthorBook> AuthorBook { get; set; }
 
         public string FullName
         {

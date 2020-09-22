@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyLibrary.BLL.Models;
 using MyLibrary.DAL;
+using MyLibrary.BLL.Interfaces;
+using MyLibrary.DAL.Repositories;
 
 namespace MyLibrary.WEB
 {
@@ -26,10 +25,16 @@ namespace MyLibrary.WEB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DatabaseConnection")));
 
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<IUnitOfWork, UnitOfWorkRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +43,7 @@ namespace MyLibrary.WEB
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -50,13 +56,15 @@ namespace MyLibrary.WEB
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Books}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

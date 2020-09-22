@@ -14,7 +14,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MyLibrary.BLL.Interfaces;
 using MyLibrary.DAL;
+using MyLibrary.DAL.Repositories;
 
 namespace MyLibrary.API
 {
@@ -34,6 +36,8 @@ namespace MyLibrary.API
 
             var connection = Configuration.GetConnectionString("DatabaseConnection");
             services.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddTransient<IUnitOfWork, UnitOfWorkRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

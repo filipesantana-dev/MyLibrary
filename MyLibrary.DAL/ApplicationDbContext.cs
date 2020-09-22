@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using MyLibrary.BLL.Models;
@@ -9,17 +11,21 @@ using System.Text;
 
 namespace MyLibrary.DAL
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Book> Books { get; set; }     
+        public DbSet<Book> Books { get; set; }
         public DbSet<AuthorBook> AuthorBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>().ToTable("User");
+
             modelBuilder.Entity<AuthorBook>()
                 .HasKey(ab => new { ab.AuthorId, ab.BookId });
 

@@ -47,7 +47,7 @@ namespace MyLibrary.WEB.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewBag.Authors = _context.Authors;
+            ViewBag.Authors = new MultiSelectList( _context.Authors, "AuthorId", "FullName" );
             return View();
         }
 
@@ -56,24 +56,14 @@ namespace MyLibrary.WEB.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookId,Title,ISBN,ReleaseYear,AuthorId, FirstName, LastName, Email, BirthDate")] Book book, Author author, int[] AuthorId)
+        public async Task<IActionResult> Create([Bind("BookId,Title,ISBN,ReleaseYear")] Book book)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(book);
                 await _context.SaveChangesAsync();
-
-                foreach (int authId in AuthorId)
-                {                    
-                    author.AuthorId = authId;
-                    AuthorId.Append(authId);
-                    _context.Update(author.AuthorId);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-
-            }
-            ViewBag.Authors = _context.Add(AuthorId);
+                return RedirectToAction(nameof(Index));
+            }            
             return View(book);
         }
 
